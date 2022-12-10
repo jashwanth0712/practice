@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #map{
+            height:500px;
+            width:100%;
+        }
+    </style>
+    <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACmTvS_UcFzqGuGowtUwu_AzO1i0cxIUE&callback=initMap&libraries=places&v=weekly"
+    defer
+  ></script>
+</head>
+<body>
+    <h1>google map</h1>
+    <div id="map">
+        
+    </div>
+    <script>
+        function initMap(){
+            const getCoords=(loc)=>{
+var laat;
+var lang;
+let arr=[];
+gecode();
+function gecode(){
+
+    axios.get('https://maps.googleapis.com/maps/api/geocode/json',{
+        params:{
+            address:loc,
+            key:'AIzaSyBjfKRpZMXhyWrm15wA5HiPCiwfxDCQMeg'
+        }
+    })
+    .then(function(respose){
+        console.log("Response:",respose)
+         laat=respose.data.results[0].geometry.location.lat;
+         lang=respose.data.results[0].geometry.location.lng;
+      //  console.log(laat);
+        //console.log(lang);
+        arr.push(laat);
+        arr.push(lang);
+
+    })
+    .catch(function(error){
+        console.log(error);
+    });
+
+}   
+
+return arr;
+}
+const display=document.querySelector("#display");
+const button=document.querySelector("#input button");
+
+button.addEventListener("click",()=>{
+    const input=document.querySelector("#input input");
+    let a=getCoords(input.value);
+})
+function initMap(){
+let a=   getCoords("Neil gogte institue of technology");
+ //console.log("hello");
+ //console.log(a);
+ console.log(a[1]);
+var op={
+        zoom:100,
+        center:{lat:17.396696444025714,lng:78.62174832327187},
+        //center:{lat:lat,long:long},
+        mapTypeId: 'satellite'
+    }
+    const svgMarker = {
+path: "M10.453 14.016l6.563-6.609-1.406-1.406-5.156 5.203-2.063-2.109-1.406 1.406zM12 2.016q2.906 0 4.945 2.039t2.039 4.945q0 1.453-0.727 3.328t-1.758 3.516-2.039 3.070-1.711 2.273l-0.75 0.797q-0.281-0.328-0.75-0.867t-1.688-2.156-2.133-3.141-1.664-3.445-0.75-3.375q0-2.906 2.039-4.945t4.945-2.039z",
+fillColor: "blue",
+fillOpacity: 0.6,
+strokeWeight: 0,
+rotation: 0,
+scale: 2,
+anchor: new google.maps.Point(15, 30),
+};
+    var map=new google.maps.Map(document.getElementById('map'),op);
+    const mar=new google.maps.Marker({
+        position:{lat:17.396696444025714,lng:78.62174832327187},
+        icon: svgMarker,
+    });
+    mar.setMap(map);
+     // Create the initial InfoWindow.
+}
+        }
+    </script>
+    
+</body>
+</html>
